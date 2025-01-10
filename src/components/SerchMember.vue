@@ -2,6 +2,7 @@
 import type { MemberDto } from 'src/apis/PostAPI'
 import { useGetMember } from 'src/apis/PostAPI'
 import { ref } from 'vue'
+import MemberComponent from 'src/components/MemberComponent.vue'
 
 // 유저 아이디 검색 창
 const serchKeyword = ref<number | null>(null)
@@ -30,11 +31,7 @@ const fetchAndSetMember = () => {
   <q-btn label="검색" color="black" @click="fetchAndSetMember()" />
 
   <div v-if="member !== null">
-    <div>{{ member.id }}</div>
-    <div>{{ member.name }}</div>
-    <div>{{ member.age }}</div>
-    <div>{{ member.email }}</div>
-    <div>{{ member.phone }}</div>
+    <MemberComponent :member="member" />
   </div>
   <div v-else>
     <p>유저 정보를 찾을 수 없습니다.</p>

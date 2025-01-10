@@ -2,6 +2,7 @@
 import type { MemberDto } from 'src/apis/PostAPI'
 import { useGetMemberList } from 'src/apis/PostAPI'
 import { ref, onMounted } from 'vue'
+import MemberComponent from 'src/components/MemberComponent.vue'
 
 // 전체 유저 조회 메서드
 const fetchMemberList = useGetMemberList()
@@ -23,25 +24,14 @@ onMounted(() => {
 </script>
 
 <template>
-  <Modal>
-    <template #content>
-      <div>
-        <div v-for="(m, i) in memberList" :key="i">
-          <div>{{ m.id }}</div>
-          <div>{{ m.name }}</div>
-          <div>{{ m.age }}</div>
-          <div>{{ m.email }}</div>
-          <div>{{ m.phone }}</div>
-          <div style="margin-top: 20px">
-            <q-btn color="black" label="수정" @click="saveMember" />
-          </div>
-        </div>
-      </div>
-    </template>
-    <template #error>
-      <p>등록된 유저가 없습니다.</p>
-    </template>
-  </Modal>
+  <div v-if="Array.isArray(memberList)">
+    <div v-for="(m, i) in memberList" :key="i">
+      <MemberComponent :member="m" />
+    </div>
+  </div>
+  <div v-else>
+    <p>등록된 유저가 없습니다.</p>
+  </div>
 </template>
 
 <style lang="scss" scoped></style>
