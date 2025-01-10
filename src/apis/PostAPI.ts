@@ -30,9 +30,17 @@ export const useGetMemberList = () => {
   const fetchGetMemberList = async () => {
     memberList = await fetch(MEMBER_PATH)
       .then((response) => {
-        return response.json()
+        if (!response.ok) {
+          return response.text().then((message) => {
+            throw new Error(message)
+          })
+        } else {
+          return response.json()
+        }
       })
-      .catch((error) => console.log('Error: ', error))
+      .catch((error) => {
+        alert(error)
+      })
   }
 
   const getMemberList = () => {
@@ -48,8 +56,18 @@ export const useGetMember = () => {
 
   const fetchGetMember = async (id: number) => {
     memberDto = await fetch(`${MEMBER_PATH}/${id}`)
-      .then((response) => response.json())
-      .catch((error) => console.log('Error: ', error))
+      .then((response) => {
+        if (!response.ok) {
+          return response.text().then((message) => {
+            throw new Error(message)
+          })
+        } else {
+          return response.json()
+        }
+      })
+      .catch((error) => {
+        alert(error)
+      })
   }
 
   const getMember = () => {
@@ -59,11 +77,9 @@ export const useGetMember = () => {
   return { fetchGetMember, getMember }
 }
 
-type Nullable<T> = T | null
-
 // 유저 추가
 export const useSaveMember = () => {
-  const saveMemberMessage = ref<Nullable<string>>(null)
+  const saveMemberMessage = ref<string>('')
 
   const fetchSaveMember = async (registMemberDto: RegistMemberDto) => {
     await fetch(MEMBER_PATH, {
@@ -73,22 +89,27 @@ export const useSaveMember = () => {
       },
       body: JSON.stringify(registMemberDto),
     })
-      .then((response) => response.text())
-      .then((message) => {
-        saveMemberMessage.value = message
+      .then((response) => {
+        if (!response.ok) {
+          return response.text().then((message) => {
+            throw new Error(message)
+          })
+        } else {
+          return response.text().then((message) => {
+            saveMemberMessage.value = message
+          })
+        }
       })
       .catch((error) => {
-        console.log('Error: ', error)
-        saveMemberMessage.value = '서버 통신 중 오류가 발생했습니다.'
+        alert(error)
       })
   }
-
   return { fetchSaveMember, saveMemberMessage }
 }
 
 // 유저 정보 수정
 export const useUpdateMember = () => {
-  const updateMemberMessage = ref<Nullable<string>>(null)
+  const updateMemberMessage = ref<string>('')
 
   const fetchUpdateMember = async (updateMemberDto: UpdateMemberDto) => {
     await fetch(MEMBER_PATH, {
@@ -98,33 +119,48 @@ export const useUpdateMember = () => {
       },
       body: JSON.stringify(updateMemberDto),
     })
-      .then((response) => response.text())
+      .then((response) => {
+        if (!response.ok) {
+          return response.text().then((message) => {
+            throw new Error(message)
+          })
+        } else {
+          return response.text()
+        }
+      })
       .then((message) => {
         updateMemberMessage.value = message
       })
       .catch((error) => {
-        console.log('Error: ', error)
-        updateMemberMessage.value = '서버 통신 중 오류가 발생했습니다.'
+        alert(error)
       })
   }
 
   return { fetchUpdateMember, updateMemberMessage }
 }
 
+// 유저 삭제
 export const useDeleteMember = () => {
-  const deleteMemberMessage = ref<Nullable<string>>(null)
+  const deleteMemberMessage = ref<string>('')
 
   const fetchDeleteMember = async (id: number) => {
     await fetch(`${MEMBER_PATH}/${id}`, {
       method: 'DELETE',
     })
-      .then((response) => response.text())
+      .then((response) => {
+        if (!response.ok) {
+          return response.text().then((message) => {
+            throw new Error(message)
+          })
+        } else {
+          return response.text()
+        }
+      })
       .then((message) => {
         deleteMemberMessage.value = message
       })
       .catch((error) => {
-        console.log('Error: ', error)
-        deleteMemberMessage.value = '서버 통신 중 오류가 발생했습니다.'
+        alert(error)
       })
   }
 

@@ -7,15 +7,19 @@ const toAllMemberList = () => {
   router.push('/all')
 }
 
-const toSerchMemberList = () => {
+const toSerchMember = () => {
   router.push('/serch')
+}
+
+const toSaveMember = () => {
+  router.push('/save')
 }
 </script>
 
 <template>
   <q-btn label="전체유저" color="black" @click="toAllMemberList" />
-  <q-btn label="유저검색" color="black" @click="toSerchMemberList" />
-  <q-btn label="유저추가" color="black" />
+  <q-btn label="유저검색" color="black" @click="toSerchMember" />
+  <q-btn label="유저추가" color="black" @click="toSaveMember" />
   <q-btn label="정보수정" color="black" />
   <q-btn label="유저삭제" color="black" />
   <div><router-view /></div>

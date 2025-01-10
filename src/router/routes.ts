@@ -17,6 +17,15 @@ const routes: RouteRecordRaw[] = [
             path: 'serch',
             component: () => import('components/SerchMember.vue'),
           },
+          {
+            path: 'save',
+            component: () => import('components/SaveMember.vue'),
+          },
+          {
+            path: 'update',
+            name: 'updateMember',
+            component: () => import('components/UpdateMember.vue'),
+          },
         ],
       },
     ],

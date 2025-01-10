@@ -1,24 +1,33 @@
 <script setup lang="ts">
 import { ref } from 'vue'
+import type { RegistMemberDto } from 'src/apis/PostAPI'
+import { useSaveMember } from 'src/apis/PostAPI'
 
-// 유저 추가 모달 버튼
-const medium = ref<boolean>(false)
+const registMemberDto = ref<RegistMemberDto>({
+  name: '',
+  age: 0,
+  email: '',
+  phone: '',
+})
+
+const useSave = useSaveMember()
+
+const saveMember = async () => {
+  await useSave.fetchSaveMember(registMemberDto.value)
+  alert(useSave.saveMemberMessage.value)
+}
 </script>
 
 <template>
-  <q-dialog v-model="medium">
-    <q-card style="width: 700px; max-width: 80vw">
-      <q-card-section>
-        <div class="text-h6">유저 추가</div>
-      </q-card-section>
-
-      <q-card-section class="q-pt-none"> </q-card-section>
-
-      <q-card-actions align="right" class="bg-white text-teal">
-        <q-btn flat label="취소" v-close-popup />
-      </q-card-actions>
-    </q-card>
-  </q-dialog>
+  <div style="max-width: 500px">
+    <q-input v-model="registMemberDto.name" filled type="text" hint="Name" />
+    <q-input v-model="registMemberDto.age" filled type="number" hint="Age" />
+    <q-input v-model="registMemberDto.email" filled type="email" hint="Email" />
+    <q-input v-model="registMemberDto.phone" filled type="tel" hint="Telephone number" />
+  </div>
+  <div style="margin-top: 20px">
+    <q-btn color="black" label="추가" @click="saveMember" />
+  </div>
 </template>
 
 <style lang="scss" scoped></style>
